@@ -24,7 +24,20 @@ func main() {
 	// fmt.Println(bannerMap['H'])
 	// fmt.Println(bannerMap['!'])
 	validateInput(input, bannerMap)
+	lines := splitLines(input)
+	//fmt.Println(lines)
+	//fmt.Print(input)
+	for _, r := range lines {
+		if r == "" {
+			fmt.Println()
+		} else {
+			renderLine(r, bannerMap)
+		}
 
+	}
+	fmt.Printf("%q\n", bannerMap[' '][0]) // row 0 of space
+	fmt.Printf("%q\n", bannerMap[' '][1]) // row 1 of space
+	fmt.Printf("%q\n", bannerMap[' '][2]) // row 2 of space
 }
 func loadBanner(filename string) string {
 
@@ -68,5 +81,16 @@ func validateInput(input string, bannerMap map[rune][]string) {
 			fmt.Printf("Invalid character: %c\n", char)
 			os.Exit(1)
 		}
+	}
+}
+func splitLines(input string) []string {
+	return strings.Split(input, "\\n")
+}
+func renderLine(word string, bannerMap map[rune][]string) {
+	for i := 0; i < 8; i++ {
+		for _, char := range word {
+			fmt.Print(bannerMap[char][i])
+		}
+		fmt.Println()
 	}
 }
