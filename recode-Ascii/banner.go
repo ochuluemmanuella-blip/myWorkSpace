@@ -10,7 +10,7 @@ func LoadBanner(filename string) (map[rune][]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	content := string(data)
+	content := strings.ReplaceAll(string(data), "\r\n", "\n")
 	lines := strings.Split(content, "\n")
 	banner := make(map[rune][]string)
 	start := 1
