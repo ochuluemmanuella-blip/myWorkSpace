@@ -1,0 +1,25 @@
+package main
+
+import (
+	"errors"
+	"strings"
+)
+
+func validateInput(input string) (rune, error) {
+	for _, r := range input {
+		if r == '\n' {
+			continue
+		}
+
+		if r < 32 || r > 126 {
+			return r, errors.New("Invalid Character")
+		}
+
+	}
+	return 0, nil
+}
+func SplitInput(input string) []string {
+	input = strings.ReplaceAll(input, "\\n", "\n")
+
+	return strings.Split(input, "\n")
+}
