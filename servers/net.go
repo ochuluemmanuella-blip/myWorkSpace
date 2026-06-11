@@ -9,7 +9,7 @@ func ciceroHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Hello, world!")
 }
 
-func main() {
+func mai1n() {
 	http.HandleFunc("/hello", ciceroHandler)
 	http.ListenAndServe(":8080", nil)
 }

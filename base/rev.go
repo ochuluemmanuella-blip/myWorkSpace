@@ -17,6 +17,6 @@ func upS(s []string) []string {
 	}
 	return s
 }
-func main() {
+func mai3() {
 	fmt.Println(upS([]string{"This", "is", "the", "goal", "(up)"}))
 }
