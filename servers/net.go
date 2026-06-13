@@ -13,24 +13,24 @@ func ciceroHandler(w http.ResponseWriter, r *http.Request) {
 	)
 	io.WriteString(
 		w,
-		`<DOCTYPE html>
+		`<!DOCTYPE html>
 		<html>
 			<head>
 			<title>PRACTICE</title>
 			</head>
 			<body>
-			HI, SAMUEL!
+			<h1>ASCII Art Generator</h1>
+			<p>Welcome! This tool converts text into ASCII art.</p>
 			<br>
 			</body>
 			</html>
 				`,
 	)
-	fmt.Fprintln(w, "Hello, world!, it's so annoying")
 
 }
 
 func main() {
 	http.HandleFunc("/", ciceroHandler)
-	http.ListenAndServe(":8080", nil)
 	fmt.Println("Server running on http://localhost:8080")
+	http.ListenAndServe(":8080", nil)
 }
