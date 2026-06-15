@@ -1,4 +1,7 @@
 package main
+import (
+    "fmt"
+)
 type Rectangle struct {
     Width  float64
     Height float64
@@ -15,7 +18,7 @@ func (r *Rectangle) Scale(factor float64) {
     r.Height *= factor
 }
 
-rect := Rectangle{Width: 10, Height: 5}
+var rect = Rectangle{Width: 10, Height: 5}
 fmt.Println(rect.Area())  // 50
 rect.Scale(2)
 fmt.Println(rect.Area())  // 200
