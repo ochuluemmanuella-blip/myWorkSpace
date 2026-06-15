@@ -6,6 +6,10 @@ import (
 	"net/http"
 )
 
+type PageData struct {
+	Result string
+}
+
 func ciceroHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
@@ -18,7 +22,7 @@ func ciceroHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "template not found", http.StatusNotFound)
 		return
 	}
-	tmpl.Execute(w, nil)
+	tmpl.Execute(w, PageData{})
 
 }
 func AsciiArtHandler(w http.ResponseWriter, r *http.Request) {
@@ -57,17 +61,17 @@ func AsciiArtHandler(w http.ResponseWriter, r *http.Request) {
 
 	result := GenerateArt(text, bannerMap)
 
-	tmpl, err := template.ParseFiles("templates/result.html")
+	tmpl, err := template.ParseFiles("templates/index.html")
 	if err != nil {
 		http.Error(w, "Page Not Found", http.StatusNotFound)
 		return
 	}
-	tmpl.Execute(w, result)
+	tmpl.Execute(w, PageData{Result: result})
 
 }
 func main() {
 	http.HandleFunc("/", ciceroHandler)
 	http.HandleFunc("/ascii-art", AsciiArtHandler)
-	fmt.Println("Server running on http://localhost:8080")
-	http.ListenAndServe(":8080", nil)
+	fmt.Println("Server running on http://localhost:3030")
+	http.ListenAndServe(":3030", nil)
 }
