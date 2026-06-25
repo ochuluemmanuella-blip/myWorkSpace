@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func main() {
+func ma6n() {
 	fmt.Println(strings.ToUpper("hello"))
 	fmt.Println(strings.Replace("hello world", "world", "Go", 1))
 	fmt.Println(strings.Split("hello world", " "))

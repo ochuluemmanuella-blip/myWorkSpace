@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func main() {
+func ma1n() {
 	content := `A
  __ 
 /  \

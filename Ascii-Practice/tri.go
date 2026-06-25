@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func main() {
+func mai3() {
 	font := map[rune][]string{
 		'A': {
 			" __ ",

@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func main() {
+func ma2n() {
 	word := os.Args[1]
 	//fmt.Println(word)
 	content := `flf2a$ 5 4 8 -1 0
