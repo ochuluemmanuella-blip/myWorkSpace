@@ -8,6 +8,7 @@ import (
 
 type PageData struct {
 	Result string
+	Text string
 }
 
 func MainHandler(w http.ResponseWriter, r *http.Request) {
@@ -24,8 +25,8 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func AsciiHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Only post methods allowed", http.StatusMethodNotAllowed)
+	if r.Method != http.MethodPost && r.Method != http.MethodGet {
+		http.Error(w, "Only post and Get methods allowed", http.StatusMethodNotAllowed)
 		return
 	}
 	text := r.FormValue("text")
@@ -38,6 +39,8 @@ func AsciiHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Banner is empty", http.StatusBadRequest)
 		return
 	}
+	fmt.Println("Text: ", text)
+	fmt.Println("Banner: ", banner)
 	filename := "banners/" + banner + ".txt"
 
 	bannerMap, err := LoadBanner(filename)
@@ -60,12 +63,12 @@ func AsciiHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Page Not Found", http.StatusNotFound)
 		return
 	}
-	tmpl.Execute(w, PageData{Result: result})
+	tmpl.Execute(w, PageData{Result: result, Text: text})
 }
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", MainHandler)
 	mux.HandleFunc("/ascii", AsciiHandler)
-	fmt.Println("server is running on http://localhost:8080")
-	http.ListenAndServe(":8080", mux)
+	fmt.Println("server is running on http://localhost:9000")
+	http.ListenAndServe(":9000", mux)
 }

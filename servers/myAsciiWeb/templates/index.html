@@ -9,8 +9,8 @@
         <p>Welcome! This program changes text to ASCII Art></p>
 
 
-        <form action="/ascii-art" method="POST">
-            <input type="text" name="text" placeholder="Input your text here" maxlength="100"> 
+        <form action="/ascii" method="POST">
+            <textarea type="text" name="text" placeholder="Input your text here" maxlength="100"></textarea>
 
             <br><br>
 
@@ -25,7 +25,12 @@
             <button type="submit">Generate</button>
 
         </form>
-        <pre>if {{.Result}}</pre>
+         {{if .Result}}
+        <pre> {{.Result}}</pre>
+        <a href="/ascii?text={{.Text | urlquery}}&banner=standard">Standard</a>
+        <a href="/ascii?text={{.Text | urlquery}}&banner=shadow">Shadow</a>
+        <a href="/ascii?text={{.Text | urlquery}}&banner=thinkertoy">Thinkertoy</a>
+
         {{end}}
     </body>
 
