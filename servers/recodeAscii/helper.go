@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"html/template"
 	"net/http"
 	"os"
@@ -10,6 +11,7 @@ import (
 type PageData struct {
 	Result string
 	Text   string
+	Banner string
 }
 
 func LoadBanner(filename string) (map[rune][]string, error) {
@@ -55,6 +57,17 @@ func GenerateArt(input string, banner map[rune][]string) string {
 
 	return sb.String()
 }
+func ValidateInput(input string) (rune, error) {
+	for _, r := range input {
+		if r == '\n' || r == '\r' {
+			continue
+		}
+		if r < 32 || r > 126 {
+			return r, errors.New("Invalid character")
+		}
+	}
+	return 0, nil
+}
 func SplitInput(input string) []string {
 	input = strings.ReplaceAll(input, `\n`, "\n")
 	input = strings.ReplaceAll(input, "\r\n", "\n")
@@ -75,5 +88,82 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, nil)
 
 }
+func AsciiHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "only post methods allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	text := r.FormValue("text")
+	if text == "" {
+		http.Error(w, "no input confirmed", http.StatusBadRequest)
+		return
+	}
+	banner := r.FormValue("banner")
+	if banner == "" {
+		http.Error(w, "no banner choice confirmed", http.StatusBadRequest)
+		return
+	}
 
-func main()
+	filename := "banners/" + banner + ".txt"
+
+	Map, err := LoadBanner(filename)
+	if err != nil {
+		http.Error(w, "banner not found", http.StatusNotFound)
+		return
+	}
+	_, err = ValidateInput(text)
+	if err != nil {
+		http.Error(w, "invalid input", http.StatusBadRequest)
+		return
+	}
+	result := GenerateArt(text, Map)
+
+	tmpl, err := template.ParseFiles("templates/index.html")
+	if err != nil {
+		http.Error(w, "template not found", http.StatusNotFound)
+		return
+	}
+	tmpl.Execute(w, PageData{Result: result, Text: text})
+}
+func SwitchHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/ascii-switch" {
+		http.NotFound(w, r)
+		return
+	}
+	if r.Method != http.MethodGet {
+		http.Error(w, "only Get methods allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	text := r.URL.Query().Get("text")
+	if text == "" {
+		http.Error(w, "no input confirmed", http.StatusBadRequest)
+		return
+	}
+	banner := r.URL.Query().Get("banner")
+	if banner == "" {
+		http.Error(w, "no banner choice confirmed", http.StatusBadRequest)
+		return
+	}
+
+	filename := "banners/" + banner + ".txt"
+
+	Map, err := LoadBanner(filename)
+	if err != nil {
+		http.Error(w, "banner not found", http.StatusNotFound)
+		return
+	}
+	_, err = ValidateInput(text)
+	if err != nil {
+		http.Error(w, "invalid input", http.StatusBadRequest)
+		return
+	}
+	result := GenerateArt(text, Map)
+
+	tmpl, err := template.ParseFiles("templates/index.html")
+	if err != nil {
+		http.Error(w, "template not found", http.StatusNotFound)
+		return
+	}
+	tmpl.Execute(w, PageData{Result: result, Text: text, Banner: banner})
+
+}

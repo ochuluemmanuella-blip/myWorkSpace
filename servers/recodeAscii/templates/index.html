@@ -2,13 +2,16 @@
 <html>
     <head>
         <Title>ASCII Art Generator</Title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
+    
     <body>
 
         <h1>Welcome to my ASCII Art Generator</h1>
-
+        {{if not .Result}}
         <form action="/ascii-art" method="POST">
-            <textarea type="text" placeholder="Enter your text here" maxlength="100"></textarea>
+            <textarea name="text" placeholder="Enter your text here" maxlength="100"></textarea>
             <br><br>
             <select name="banner">
                 <option value="">--Choose a Banner--</option>
@@ -17,7 +20,18 @@
                 <option value="thinkertoy">Thinkertoy</option>
 
             </select> 
-
+            <br><br>
+            <button type="submit">Generate</button>
+        
         </form>
+        {{end}}
+
+        {{if .Result}}
+        <pre>{{.Result}}</pre>
+        <a href="/ascii-art-switch?text={{.Text | urlquery}}&banner=standard" class="active">Standard</a>
+        <a href="/ascii-art-switch?text={{.Text | urlquery}}&banner=shadow" class="active">Shadow</a>
+        <a href="/ascii-art-switch?text={{.Text | urlquery}}&banner=thinkertoy" class="active">Thinkertoy</a>
+        <a href="/" class="active">Back</a>
+        {{end}}
     </body>
 </html>
