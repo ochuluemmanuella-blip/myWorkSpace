@@ -15,8 +15,3 @@ func ValidateInput(input string) (rune, error) {
 	}
 	return 0, nil
 }
-
-// func SplitInput(input string) []string {
-// 	input = strings.ReplaceAll(input, "\\n", "\n")
-// 	return strings.Split(input, "\n")
-// }

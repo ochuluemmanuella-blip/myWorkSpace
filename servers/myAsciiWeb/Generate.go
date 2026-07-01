@@ -25,6 +25,8 @@ func GenerateArt(input string, banner map[rune][]string) string {
 	return sb.String()
 }
 func SplitInput(input string) []string {
-	input = strings.ReplaceAll(input, "\\n", "\n")
+	input = strings.ReplaceAll(input, `\n`, "\n")
+	input = strings.ReplaceAll(input, "\r\n", "\n")
+	input = strings.ReplaceAll(input, "\r", "\n")
 	return strings.Split(input, "\n")
 }
